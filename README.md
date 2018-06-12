@@ -1,6 +1,6 @@
-# LabelerNg
+# Super Annotator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+An annotation tool for whale flukes (and eventually much more!).
 
 ## Development server
 

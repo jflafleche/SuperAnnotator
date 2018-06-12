@@ -1,0 +1,32 @@
+.example-container {
+    min-height: 90vh;
+}
+  
+.example-sidenav-content {
+    position: absolute;
+    display: flex;
+    margin-left: 200px;
+    margin: 25px;
+    width: 100%;
+    max-height: 100vh;
+    align-items: top;
+    justify-content: left;
+}
+  
+.example-sidenav {
+    width: 170px;
+    padding: 10px;
+} 
+
+.selected {
+    background-color: lightgray;
+}
+
+.compact-text {
+    line-height: 30px;
+    max-height: 30px;
+}
+
+.compact {
+    max-height: 36px;
+}

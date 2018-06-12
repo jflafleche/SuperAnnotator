@@ -1,0 +1,24 @@
+<div class="mat-elevation-z0">
+    <app-loader></app-loader>
+    <mat-sidenav-container class="example-container">
+        <mat-sidenav #sidenav mode="side" opened class="example-sidenav">
+                <button mat-raised-button *ngIf="!loader.selectedDir" color="accent" (click)="fileInput.click()">
+                    <span>Select Folder</span>
+                    <input #fileInput type="file" (change)="loader.selectFolder($event)" style="display:none;" webkitdirectory mozdirectory msdirectory odirectory directory multiple="multiple" />
+                </button>
+                <mat-list>
+                    <mat-list-item *ngFor="let im_name of loader.images; index as i" class="compact">
+                        <button [ngClass]="{'selected': i === loader.selectedIdx}" class="compact-text" *ngIf="loader.checkIfDone(im_name)" mat-button (click)="goTo(i)">{{im_name}}</button>
+                        <button [ngClass]="{'selected': i === loader.selectedIdx}" class="compact-text" *ngIf="!loader.checkIfDone(im_name)" mat-button color="accent" (click)="goTo(i)">{{im_name}}</button>
+                    </mat-list-item>
+                </mat-list>
+        </mat-sidenav>
+        <mat-sidenav-content class="example-sidenav-content">
+            <app-canvas-ctrl 
+                (down)="onDown($event)" 
+                (move)="onMove($event)" 
+                (up)="onUp()">
+            </app-canvas-ctrl>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
