@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CanvasCtrlComponent } from '../canvas-ctrl/canvas-ctrl.component';
-import { LoaderComponent } from '../loader/loader.component'
 import { Landmarks } from '../landmarks/landmarks';
 import { Landmark } from '../landmarks/landmark';
+import { SaverLoader } from '../loader/saver-loader';
 
 import { HostListener } from '@angular/core';
 
@@ -16,26 +16,24 @@ export class InterfaceComponent implements OnInit {
   @ViewChild(CanvasCtrlComponent) 
   canvas: CanvasCtrlComponent;
 
-  @ViewChild(LoaderComponent) 
-  loader: LoaderComponent;
+  // @ViewChild(LoaderComponent) 
+  // loader: LoaderComponent;
+  sl = new SaverLoader;
+  isLoadingFiles = false;
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(e: KeyboardEvent) {
     console.log(`The user just pressed ${e.key}!`);
     switch(e.key) {
       case 'n':
-        this.loader.writeAnnotations(this.landmarks.l_arr);
-        var curr = this.loader.next();
+        this.next();
         break;
       case 'p':
-        this.loader.writeAnnotations(this.landmarks.l_arr);
-        var curr = this.loader.prev();
+        this.prev();
         break;
       default:
         return;
     }
-    this.landmarks.load_annos(curr.annos);
-    this.setBackground(curr.path);
   }
   
   showMsg: string;
@@ -47,7 +45,29 @@ export class InterfaceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.setBackground('/Users/jfl/code/whales/data/train/0a0b2a01.jpg')
+  }
+
+  next() {
+    this.sl.writeAnnotations(this.landmarks.l_arr);
+    var curr = this.sl.next();
+    this.landmarks.load_annos(curr.annos);
+    this.setBackground(curr.path);
+  }
+
+  prev() {
+    this.sl.writeAnnotations(this.landmarks.l_arr);
+    var curr = this.sl.prev();
+    this.landmarks.load_annos(curr.annos);
+    this.setBackground(curr.path);
+  }
+
+  onSelectFolder(e) {
+    this.isLoadingFiles = true;
+    console.log(this.isLoadingFiles)
+    this.sl.selectFolder(e);
+    this.goTo(0);
+    this.isLoadingFiles = false;
+    console.log(this.isLoadingFiles)
   }
 
   setBackground(imgPath: string): void {
@@ -96,7 +116,6 @@ export class InterfaceComponent implements OnInit {
   }
 
   drawAnnos() {
-    console.log(this.landmarks.l_arr)
     this.canvas.clearAnnos();
     this.landmarks.l_arr.forEach((pt) => {
       this.canvas.drawPoint(pt.x, pt.y, pt.r)
@@ -104,7 +123,7 @@ export class InterfaceComponent implements OnInit {
   }
 
   goTo(idx) {
-    var curr = this.loader.jump(idx);
+    var curr = this.sl.jump(idx);
     this.landmarks.load_annos(curr.annos);
     this.setBackground(curr.path);
   }

@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/labeler-ng-darwin-x64
 
 # dependencies
 /node_modules

@@ -1,19 +1,31 @@
-<div class="mat-elevation-z0">
-    <app-loader></app-loader>
+<div>
     <mat-sidenav-container class="example-container">
         <mat-sidenav #sidenav mode="side" opened class="example-sidenav">
-                <button mat-raised-button *ngIf="!loader.selectedDir" color="accent" (click)="fileInput.click()">
+                <button mat-raised-button *ngIf="!sl.selectedDir" color="accent" (click)="fileInput.click()">
                     <span>Select Folder</span>
-                    <input #fileInput type="file" (change)="loader.selectFolder($event)" style="display:none;" webkitdirectory mozdirectory msdirectory odirectory directory multiple="multiple" />
+                    <input #fileInput type="file" (change)="onSelectFolder($event)" style="display:none;" webkitdirectory mozdirectory msdirectory odirectory directory multiple="multiple" />
                 </button>
                 <mat-list>
-                    <mat-list-item *ngFor="let im_name of loader.images; index as i" class="compact">
-                        <button [ngClass]="{'selected': i === loader.selectedIdx}" class="compact-text" *ngIf="loader.checkIfDone(im_name)" mat-button (click)="goTo(i)">{{im_name}}</button>
-                        <button [ngClass]="{'selected': i === loader.selectedIdx}" class="compact-text" *ngIf="!loader.checkIfDone(im_name)" mat-button color="accent" (click)="goTo(i)">{{im_name}}</button>
-                    </mat-list-item>
+                    <mat-spinner *ngIf="isLoadingFiles"></mat-spinner>
+                    <div class="list" *ngIf="!isLoadingFiles">
+                        <mat-list-item *ngFor="let im_name of sl.images; index as i" class="compact">
+                            <button [ngClass]="{'selected': i === sl.selectedIdx}" class="compact-text" *ngIf="sl.checkIfDone(im_name)" mat-button (click)="goTo(i)">{{im_name}}</button>
+                            <button [ngClass]="{'selected': i === sl.selectedIdx}" class="compact-text" *ngIf="!sl.checkIfDone(im_name)" mat-button color="accent" (click)="goTo(i)">{{im_name}}</button>
+                        </mat-list-item>
+                    </div>
                 </mat-list>
         </mat-sidenav>
         <mat-sidenav-content class="example-sidenav-content">
+            <mat-toolbar style="position: absolute">
+                <div class="button-container" style="margin: auto;">
+                    <button class="canvas-buttons" mat-mini-fab (click)="prev()">
+                        <mat-icon aria-label="Previous">arrow_back</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="next()">
+                        <mat-icon aria-label="Next">arrow_forward</mat-icon>
+                    </button>
+                </div>
+            </mat-toolbar>
             <app-canvas-ctrl 
                 (down)="onDown($event)" 
                 (move)="onMove($event)" 

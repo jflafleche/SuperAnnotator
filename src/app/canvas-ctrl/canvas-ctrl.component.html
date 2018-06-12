@@ -1,23 +1,25 @@
 <div id="canvas-container"
-    width="800"
+    width="100%"
     height="600"
     (mousedown)="onDown($event)"
     (mousemove)="onMove($event)"
     (mouseup)="onUp()"
     style="float: left;
-    border: 1px gray solid;">
+        border: 1px gray solid;
+        margin: 70px 20px;
+        position: relative;">
     <canvas id="canvas_bkg" 
-        width="800"
+        width="800px%"
         height="0"
         style="z-index: 1;
-        position: absolute;">
+            position: absolute;">
         background-color: transparent;">
     </canvas>
     <canvas id="canvas_anno" 
-        width="800"
+        width="800px%"
         height="0"
         style="z-index: 2;
-        position: absolute;">
+            position: absolute;">
         background-color: transparent;">
     </canvas>
 </div>
